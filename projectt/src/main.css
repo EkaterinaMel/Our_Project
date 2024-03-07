@@ -50,7 +50,6 @@ margin-left: 50px;
 
 
 #root{
-	height: 100%;
 	padding: 0;
 }
 
@@ -106,8 +105,18 @@ input{
 .bottom button{
 	display: inline-block;
 }
+#result{
+	height: 168px;
+	overflow: scroll;
+}
+#result p{
+	white-space: initial;
+	word-wrap: break-word;
+}
 
-
+#radio{
+	margin-top: 20px
+}
 
 button {
   background-color: #e7e7e7; color: black; /* Green */

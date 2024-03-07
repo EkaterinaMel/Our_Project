@@ -16,17 +16,20 @@
 	<div class="parent">
 	<div class="div1">
 		<div class="column vars"><h4>Куда сохранять результаты</h4><br>
-		<form action="/form/submit" method="post">
 		      <div>
-		        <input class="settings_input" type="text" />
-		        <button><h4>Выбрать</h4></button>
+		        <input id="setting" class="settings_input" type="text" value="./" />
+		        <button onclick="save()"><h4>Выбрать</h4></button>
 		      </div>
-	    </form>
 		</div>
 		<dir class="">
 			
 		</dir>
 	</div>
 	</div>
+<script type="text/javascript">
+		function save(){
+			window.electronAPI.setTitle("setting "+document.getElementById("setting").value)
+		}
+</script>
 </body>
 </html>

@@ -7,6 +7,7 @@
 	<title>Планктоны</title>
 	<link rel="stylesheet" href="main.css" />
 	<script src="function-plot.js"></script>
+	<script src="calculate.js"></script>
 </head>
 <body>
 	<div class="menu">
@@ -20,60 +21,127 @@
 		<form action="/form/submit" method="post">
 		      <div>
 		        <label>n = </label>
-		        <input type="text" />
+		        <input value="15" id="n" type="text" />
 		      </div>
 		      <div>
 		        <label>B = </label>
-		        <input type="text" />
+		        <input value="5.4" id="B" type="text" />
 		      </div>
 		      <div>
 		        <label>w = </label>
-		        <input type="text" />
+		        <input value="0.2" id="w" type="text" />
 		      </div>
 		      <div>
 		        <label>y* = </label>
-		        <input type="text" />
+		        <input value="0.5" id="yg" type="text" />
 		      </div>
 		      <div>
 		        <label>a = </label>
-		        <input type="text" />
+		        <input value="0.5" id="a" type="text" />
 		      </div>
 		      <div>
 		        <label>y0 = </label>
-		        <input type="text" />
+		        <input value="0.1" id="y0" type="text" />
 		      </div>
 		      <div>
 		        <label>z0 = </label>
-		        <input type="text" />
+		        <input value="0.1" id="z0" type="text" />
 		      </div>
 	    </form>
 		</div>
   		<div class="column depend"><h4>График зависимости</h4><br>
-	  		<form action="/form/submit" method="post">
-			      <div>
-			      	<input type="text" />
-			        <label>от</label>
-			        <input type="text" />
-			      </div>
-		    </form>
+	  		  <div id="radio">
+			    <input type="radio" id="x_y" name="depend" value="y от x" checked />
+			    <label for="y">y от x</label>
+			  </div>
+
+			  <div>
+			    <input type="radio" id="x_z" name="depend" value="z от x" />
+			    <label for="z">z от x</label>
+			  </div>
 		</div>
 		<dir class="bottom">
-			<button><h4>Рассчитать</h4></button>
+			<button onclick="displ()"><h4>Рассчитать</h4></button>
 		</dir>
 	</div>
-	<div class="div2"><div id="root"></div></div>
-	</div>
+	<div class="div2"><div id="root"></div><div id="result"></div></div>
+</div>
 	<script src="script.js"></script>
 	<script type="module">
 	    functionPlot({
 	        target: '#root',
 	        width: 525,
-	        height: 668,
+	        height: 500, //668
 	        grid: true,
-	        data: [{ fn: 'x^2' }]
+	        data: [
+			    {
+			      points: [
+
+			      ],
+			      fnType: 'points',
+			      graphType: 'polyline'
+			    }
+			  ]
 	    })
 
 
 	</script>
+
+	<script type="text/javascript">
+		function displ(){
+				
+				
+
+
+
+
+
+
+
+				var d = -1
+				if (document.getElementById("x_y").checked == true){
+					d = 0
+				} else{
+					d = 1
+				}
+
+
+
+				//function calculate(n_arg, B_arg, w_arg, yg_arg, a_arg, y0_arg, z0_arg){
+				res = calculate(parseFloat(document.getElementById("n").value), parseFloat(document.getElementById("B").value), parseFloat(document.getElementById("w").value), parseFloat(document.getElementById("yg").value), parseFloat(document.getElementById("a").value), parseFloat(document.getElementById("y0").value), parseFloat(document.getElementById("z0").value))[d]
+				var points = []
+
+
+
+				//points.push(12)
+				document.getElementById("result").innerHTML = ""
+				for (var i = 0; i <= parseFloat(document.getElementById("n").value); i++) {
+					document.getElementById("result").innerHTML = document.getElementById("result").innerHTML + "("+i.toString()+","+res[i].toString()+")"+" "
+					points.push([i, res[i]])
+				}
+
+				window.electronAPI.setTitle("result "+document.getElementById("result").innerHTML)
+
+				functionPlot({
+		        target: '#root',
+		        width: 525,
+		        height: 500,
+		        grid: true,
+		        data: [
+				    {
+				      points: points,
+				      fnType: 'points',
+				      graphType: 'polyline'
+				    }
+				  ]
+		    	})
+		
+
+		}
+	</script>
+
+
+
 </body>
+
 </html>
