@@ -18,7 +18,7 @@
 		<div class="column vars"><h4>Куда сохранять результаты</h4><br>
 		      <div>
 		        <input id="setting" class="settings_input" type="text" value="./" />
-		        <button onclick="save()"><h4>Выбрать</h4></button>
+		        <button id="btn"><h4>Выбрать</h4></button>
 		      </div>
 		</div>
 		<dir class="">
@@ -27,8 +27,26 @@
 	</div>
 	</div>
 <script type="text/javascript">
+
+		async function asyncCall() {
+		  var r = await window.electronAPI.setTitle("get_res_dir");
+		  document.getElementById("setting").value = r
+		}
+
+		asyncCall();
+		const btn = document.getElementById('btn')
+		btn.addEventListener('click', async () => {
+
+		  const filePath = await window.electronAPI.openDirectory()
+		  document.getElementById("setting").value = filePath
+		})
+
+
 		function save(){
-			window.electronAPI.setTitle("setting "+document.getElementById("setting").value)
+			//const filePath = await window.electronAPI.openFile()
+			//const filePathElement = document.getElementById('filePath')
+  			//filePathElement.innerText = filePath
+			//window.electronAPI.setTitle("setting "+document.getElementById("setting").value)
 		}
 </script>
 </body>

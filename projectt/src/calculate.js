@@ -51,7 +51,7 @@ function calculate(n_arg, B_arg, w_arg, yg_arg, a_arg, y0_arg, z0_arg){
 
 
 	if (n < 0 || B < 0 || w < 0 || yg < 0 || a < 0 || y0 < 0 || z0 < 0) {
-	    console.log("Все введенные значения должны быть больше нуля! \n");
+	    return "Все введенные значения должны быть больше нуля!";
 	}
 
 	y = y0;
@@ -64,7 +64,7 @@ function calculate(n_arg, B_arg, w_arg, yg_arg, a_arg, y0_arg, z0_arg){
 	    const y_last = y;
 	    const calc = (a * z) / (yg + y);
 	    if (calc > 1) {
-	        console.log("Значение дроби вне ОДЗ! \n"); // это впринципе не ошибка, но на этом нужно остановиться
+	        return "Значение дроби вне ОДЗ!"; // это впринципе не ошибка, но на этом нужно остановиться
 	        break;
 	    }
 	    y = B * (1 - calc) * y * Math.exp(-y);

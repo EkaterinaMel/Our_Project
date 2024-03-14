@@ -1,16 +1,13 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const path = require('node:path')
 const fs = require('fs');
 
-var res_dir='.'
+var res_dir= process.cwd();
 
 function handleSetTitle (event, title) {
-  if (title.split(" ")[0] == "setting"){
-
-  	res_dir=title.split(" ")[1]
-  	console.log(title)
-  	return
-  }
+	if (title == "get_res_dir"){
+		return res_dir;
+	}
   title = title.slice(7);
   title = title+'\n'+'\n';
   fs.appendFile(res_dir+'/'+'result.txt', title, (err) => {
@@ -18,8 +15,26 @@ function handleSetTitle (event, title) {
 	    console.error(err);
 	    return;
 	  }
-	  console.log('String added to result.txt successfully!');
   });
+  return res_dir;
+}
+
+let settings = {
+    'renderer': {
+        'key1': 'value1',
+        'key2': 'value2'
+    }
+}
+
+async function handleFileOpen () {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+  	properties: ['openDirectory']
+  })
+  if (!canceled) {
+  	console.log('handleFileOpen')
+  	res_dir = filePaths[0]
+    return filePaths[0]
+  }
 }
 
 function createWindow () {
@@ -28,10 +43,10 @@ function createWindow () {
 		height: 700,
 		resizable: false,
 		webPreferences: {
+			webSecurity: false,
 			preload: path.join(__dirname, 'preload.js')
 		}
 	});
-
 
 
 
@@ -45,13 +60,16 @@ function createWindow () {
 		return { success: true, filePath };
 	})*/
 
-	win.loadFile('src/index.html');
+	win.loadFile('src/index.html')
+		.then(() => { win.webContents.send('sendSettings', settings.renderer); })
+        .then(() => { win.show(); });
 	win.setMenu(null)
-	win.webContents.openDevTools()
+	//win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
-  ipcMain.on('set-title', handleSetTitle)
+  ipcMain.handle('set-title', handleSetTitle)
+  ipcMain.handle('dialog:openDirectory', handleFileOpen)
   createWindow()
 })
 

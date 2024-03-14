@@ -7,7 +7,9 @@ body{
 	font-family: "Gill Sans", sans-serif;
 }
 
-
+button{
+	cursor: pointer;
+}
 
 
 
@@ -108,6 +110,9 @@ input{
 #result{
 	height: 168px;
 	overflow: scroll;
+	position: relative;
+	left: 40px;
+	width: 466px;
 }
 #result p{
 	white-space: initial;

@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Планктоны</title>
 	<link rel="stylesheet" href="main.css" />
-	<script src="function-plot.js"></script>
+	<script src="https://unpkg.com/function-plot/dist/function-plot.js"></script>
 	<script src="calculate.js"></script>
 </head>
 <body>
@@ -52,26 +52,25 @@
   		<div class="column depend"><h4>График зависимости</h4><br>
 	  		  <div id="radio">
 			    <input type="radio" id="x_y" name="depend" value="y от x" checked />
-			    <label for="y">y от x</label>
+			    <label for="y">y от n</label>
 			  </div>
 
 			  <div>
 			    <input type="radio" id="x_z" name="depend" value="z от x" />
-			    <label for="z">z от x</label>
+			    <label for="z">z от n</label>
 			  </div>
 		</div>
 		<dir class="bottom">
-			<button onclick="displ()"><h4>Рассчитать</h4></button>
+			<button id="btn"><h4>Рассчитать</h4></button>
 		</dir>
 	</div>
 	<div class="div2"><div id="root"></div><div id="result"></div></div>
 </div>
-	<script src="script.js"></script>
 	<script type="module">
 	    functionPlot({
 	        target: '#root',
 	        width: 525,
-	        height: 500, //668
+	        height: 500, 
 	        grid: true,
 	        data: [
 			    {
@@ -88,9 +87,10 @@
 	</script>
 
 	<script type="text/javascript">
-		function displ(){
-				
-				
+		
+		const btn = document.getElementById('btn')
+
+		btn.addEventListener('click', async () => {
 
 
 
@@ -110,7 +110,10 @@
 				//function calculate(n_arg, B_arg, w_arg, yg_arg, a_arg, y0_arg, z0_arg){
 				res = calculate(parseFloat(document.getElementById("n").value), parseFloat(document.getElementById("B").value), parseFloat(document.getElementById("w").value), parseFloat(document.getElementById("yg").value), parseFloat(document.getElementById("a").value), parseFloat(document.getElementById("y0").value), parseFloat(document.getElementById("z0").value))[d]
 				var points = []
-
+				if (typeof res == "string"){
+					alert(res);
+					return;
+				}
 
 
 				//points.push(12)
@@ -120,7 +123,7 @@
 					points.push([i, res[i]])
 				}
 
-				window.electronAPI.setTitle("result "+document.getElementById("result").innerHTML)
+				window.electronAPI.setTitle("result "+document.getElementById("result").innerHTML);
 
 				functionPlot({
 		        target: '#root',
@@ -137,11 +140,13 @@
 		    	})
 		
 
-		}
+		})
 	</script>
 
 
 
 </body>
+<script type="text/javascript">
 
+</script>
 </html>

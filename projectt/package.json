@@ -13,6 +13,6 @@
     "electron": "^27.3.3"
   },
   "dependencies": {
-    "function-plot": "^1.23.3"
+    "function-plot": "^1.24.4"
   }
 }
